@@ -91,7 +91,7 @@ def detect_face(frame):
     cx = ((x1 + x2) / 2) / w
     cy = ((y1 + y2) / 2) / h
     # Bias slightly upward so full head is in frame
-    cy = max(0.0, cy - 0.04)
+    cy = max(0.0, cy - 0.10)  # bias upward to include full head
     return { 'x': round(float(cx), 4), 'y': round(float(cy), 4) }
 
 
