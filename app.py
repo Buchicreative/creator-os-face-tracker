@@ -12,6 +12,7 @@ app = Flask(__name__)
 # Allow requests from Creator OS frontend
 CORS(app, origins=[
     'https://creator-os-frontend-production.up.railway.app',
+    'https://web-production-f98059.up.railway.app',
     'http://localhost:8080',
     'http://127.0.0.1:8080',
     '*'  # open for testing — restrict later
@@ -41,6 +42,10 @@ def load_model():
         )
     face_net = cv2.dnn.readNetFromCaffe(PROTO_PATH, MODEL_PATH)
     print('[FaceTracker] Model loaded OK')
+
+# Load model at startup
+with app.app_context():
+    load_model()
 
 # ── Health check ─────────────────────────────────────────────────────────────
 @app.route('/', methods=['GET'])
