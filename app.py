@@ -168,20 +168,11 @@ def track_faces():
                 face  = detect_face(small)
 
                 if face:
-                    if smoothed_x is None:
-                        smoothed_x = face['x']
-                        smoothed_y = face['y']
-                    else:
-                        # Lerp smooth
-                        smoothed_x += (face['x'] - smoothed_x) * SMOOTH
-                        smoothed_y += (face['y'] - smoothed_y) * SMOOTH
-                    last_face = { 'x': round(smoothed_x, 4), 'y': round(smoothed_y, 4) }
-                else:
-                    # Drift back toward center
-                    if smoothed_x is not None:
-                        smoothed_x += (0.5 - smoothed_x) * SMOOTH * 0.3
-                        smoothed_y += (0.5 - smoothed_y) * SMOOTH * 0.3
-                        last_face = { 'x': round(smoothed_x, 4), 'y': round(smoothed_y, 4) }
+                    # Return raw detection — frontend handles smoothing
+                    last_face = { 'x': round(face['x'], 4), 'y': round(face['y'], 4) }
+                    smoothed_x = face['x']
+                    smoothed_y = face['y']
+                # If no face detected, keep last known position (don't drift)
 
             results.append({
                 'frame' : frame_idx,
